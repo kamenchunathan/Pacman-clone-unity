@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour {
 			currentTravelDirection = newDirection;
 		}
 
+		// Move the player
+		// TODO: Replace translation with snappier movement system
 		transform.Translate(inputVector * playerSpeed * Time.deltaTime);
 	}
 
