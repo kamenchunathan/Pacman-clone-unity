@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour {
 
 	int currentTravelDirection = 0;
 
-	void Start(){
+	void Start()
+	{
 		playerAnimator = GetComponent<Animator>();
 	}
 
