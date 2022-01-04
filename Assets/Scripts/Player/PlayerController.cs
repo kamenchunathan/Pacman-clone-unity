@@ -19,8 +19,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private int _currentTravelDirection = 0;
 
+    private Rigidbody2D _rigidbody2D;
+
     private void Start(){
         _playerAnimator = GetComponent<Animator>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void Update(){
@@ -35,10 +38,17 @@ public class PlayerController : MonoBehaviour
             _playerAnimator.SetInteger(_animation1, newDirection);
             _currentTravelDirection = newDirection;
         }
+    }
 
+    private void FixedUpdate(){
         // Move the player
-        // TODO: Replace translation with snappier movement system
-        transform.Translate(inputVector * playerSpeed * Time.deltaTime);
+        // TODO: Add a better more responsive movement system as get axis due to smoothing effect gives the
+        //    feeling of a lagging movement of the player 
+        float xInput = Input.GetAxis("Horizontal");
+        float yInput = Input.GetAxis("Vertical");
+
+        Vector3 inputVector = new Vector3(xInput, yInput, 0).normalized;
+        _rigidbody2D.MovePosition((Vector2)(transform.position + (inputVector * playerSpeed * Time.deltaTime)));
     }
 
     /// <summary>
