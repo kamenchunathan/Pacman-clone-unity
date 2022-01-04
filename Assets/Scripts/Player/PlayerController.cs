@@ -1,46 +1,45 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
-	
-	[SerializeField]
-	float playerSpeed = 10.0f;
+// ReSharper disable once CheckNamespace
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] private float playerSpeed = 10.0f;
 
-	Animator playerAnimator;
+    private Animator _playerAnimator;
 
-	int currentTravelDirection = 0;
+    private int _currentTravelDirection = 0;
+    private readonly int animation1 = Animator.StringToHash("Animation");
 
-	void Start()
-	{
-		playerAnimator = GetComponent<Animator>();
-	}
+    void Start(){
+        _playerAnimator = GetComponent<Animator>();
+    }
 
-	void Update(){
-		float xInput = Input.GetAxis("Horizontal");
-		float yInput = Input.GetAxis("Vertical");
+    void Update(){
+        float xInput = Input.GetAxis("Horizontal");
+        float yInput = Input.GetAxis("Vertical");
 
-		Vector3 inputVector = new Vector3(xInput, yInput, 0).normalized;
+        Vector3 inputVector = new Vector3(xInput, yInput, 0).normalized;
 
-		// Set the appropriate animation according to direction 
-		int newDirection = getMostSignificantDirection(inputVector);
-		if (currentTravelDirection != newDirection){
-			playerAnimator.SetInteger("Animation", newDirection);
-			currentTravelDirection = newDirection;
-		}
+        // Set the appropriate animation according to direction 
+        int newDirection = GetMostSignificantDirection(inputVector);
+        if (_currentTravelDirection != newDirection){
+            _playerAnimator.SetInteger(animation1, newDirection);
+            _currentTravelDirection = newDirection;
+        }
 
-		// Move the player
-		// TODO: Replace translation with snappier movement system
-		transform.Translate(inputVector * playerSpeed * Time.deltaTime);
-	}
+        // Move the player
+        // TODO: Replace translation with snappier movement system
+        transform.Translate(inputVector * playerSpeed * Time.deltaTime);
+    }
 
-	int getMostSignificantDirection(Vector3 normalizedInputVector){
-		float x = normalizedInputVector.x;
-		float y = normalizedInputVector.y;
+    private int GetMostSignificantDirection(Vector3 normalizedInputVector){
+        float x = normalizedInputVector.x;
+        float y = normalizedInputVector.y;
 
-		if((int)x == 0 && (int)y==0)
-			return currentTravelDirection;
+        if ((int) x == 0 && (int) y == 0)
+            return _currentTravelDirection;
 
-		return Math.Abs(x) > Math.Abs(y) ? 2 - Convert.ToInt32(x) : 1 + Convert.ToInt32(y);
-	}
-
+        return Math.Abs(x) > Math.Abs(y) ? 2 - Convert.ToInt32(x) : 1 + Convert.ToInt32(y);
+    }
 }
